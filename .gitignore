@@ -20,4 +20,4 @@
 ###< symfony/phpunit-bridge ###
 /.idea/
 /.env
-.DS_Store
+.DS_Store.env
