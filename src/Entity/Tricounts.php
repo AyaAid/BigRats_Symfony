@@ -15,6 +15,9 @@ class Tricounts
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'tricounts')]
+    private Collection $user;
+
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -25,19 +28,44 @@ class Tricounts
     private ?string $category = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $devise = "euro";
+    private ?string $devise = 'euro';
 
-    #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'tricounts')]
-    private Collection $user;
+    #[ORM\OneToMany(mappedBy: 'tricount', targetEntity: Expenses::class, orphanRemoval: true)]
+    private Collection $expenses;
 
     public function __construct()
     {
         $this->user = new ArrayCollection();
+        $this->expenses = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection<int, Users>
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    public function addUser(Users $user): static
+    {
+        if (!$this->user->contains($user)) {
+            $this->user->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(Users $user): static
+    {
+        $this->user->removeElement($user);
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -89,25 +117,31 @@ class Tricounts
     }
 
     /**
-     * @return Collection<int, Users>
+     * @return Collection<int, Expenses>
      */
-    public function getUser(): Collection
+    public function getExpenses(): Collection
     {
-        return $this->user;
+        return $this->expenses;
     }
 
-    public function addUser(Users $user): static
+    public function addExpense(Expenses $expense): static
     {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
+        if (!$this->expenses->contains($expense)) {
+            $this->expenses->add($expense);
+            $expense->setTricount($this);
         }
 
         return $this;
     }
 
-    public function removeUser(Users $user): static
+    public function removeExpense(Expenses $expense): static
     {
-        $this->user->removeElement($user);
+        if ($this->expenses->removeElement($expense)) {
+            // set the owning side to null (unless already changed)
+            if ($expense->getTricount() === $this) {
+                $expense->setTricount(null);
+            }
+        }
 
         return $this;
     }
