@@ -59,6 +59,11 @@ class Users
         return $this->firstname;
     }
 
+    public function __toString()
+    {
+        return $this->getFirstname(); // Remplacez par la méthode appropriée pour obtenir une représentation en chaîne de caractères de l'utilisateur
+    }
+
     public function setFirstname(string $firstname): static
     {
         $this->firstname = $firstname;
