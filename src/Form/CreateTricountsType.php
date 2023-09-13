@@ -81,6 +81,9 @@ class CreateTricountsType extends AbstractType
                 'choice_label' => 'firstname',
                 'multiple' => true,
                 'expanded' => true,
+                'attr' => [
+                    'data-max' => 50,
+                ],
             ])
 
             ->add(

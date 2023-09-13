@@ -145,4 +145,26 @@ class Tricounts
 
         return $this;
     }
+
+    public function getUsersWithBalances(): array
+    {
+        $usersWithBalances = [];
+
+        foreach ($this->user as $user) {
+            $balance = 0;
+
+            foreach ($this->expenses as $expense) {
+                if ($expense->getUser() === $user) {
+                    $balance += $expense->getValue();
+                }
+            }
+
+            $usersWithBalances[] = [
+                'user' => $user,
+                'balance' => $balance,
+            ];
+        }
+
+        return $usersWithBalances;
+    }
 }
