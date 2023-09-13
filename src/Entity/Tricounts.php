@@ -15,7 +15,7 @@ class Tricounts
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'tricounts')]
+    #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'Tricounts')]
     private Collection $user;
 
     #[ORM\Column(length: 255)]
@@ -30,7 +30,7 @@ class Tricounts
     #[ORM\Column(length: 255)]
     private ?string $devise = 'euro';
 
-    #[ORM\OneToMany(mappedBy: 'tricount', targetEntity: Expenses::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'Tricount', targetEntity: Expenses::class, orphanRemoval: true)]
     private Collection $expenses;
 
     #[ORM\Column(nullable: true)]
@@ -76,6 +76,10 @@ class Tricounts
         return $this->name;
     }
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
     public function setName(string $name): static
     {
         $this->name = $name;

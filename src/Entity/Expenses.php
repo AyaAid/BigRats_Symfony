@@ -83,12 +83,12 @@ class Expenses
         return $this;
     }
 
-    public function getTricount(): ?tricounts
+    public function getTricount(): ?Tricounts
     {
         return $this->tricount;
     }
 
-    public function setTricount(?tricounts $tricount): static
+    public function setTricount(?Tricounts $tricount): static
     {
         $this->tricount = $tricount;
 
