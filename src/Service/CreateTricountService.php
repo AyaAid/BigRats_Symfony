@@ -37,17 +37,23 @@ class CreateTricountService
 
     public function createTricount($data, Request $request)
     {
-            $name = $data->getName();
-            $description = $data->getDescription();
-            $category = $data->getCategory();
-            $user = $this->security->getUser();
+        $name = $data->getName();
+        $description = $data->getDescription();
+        $category = $data->getCategory();
+        $users = $data->getUser(); // Obtenez tous les utilisateurs sélectionnés
+        $tricount = new Tricounts();
+        $tricount->setName($name);
+        $tricount->setDescription($description);
+        $tricount->setCategory($category);
 
-            $tricount = new Tricounts();
-            $tricount->setName($name);
-            $tricount->setDescription($description);
-            $tricount->setCategory($category);
+        // Créez une nouvelle instance de Tricounts pour chaque utilisateur
+        foreach ($users as $user) {
+
             $tricount->addUser($user);
+
             $this->entityManager->persist($tricount);
-            $this->entityManager->flush();
+        }
+
+        $this->entityManager->flush();
     }
 }

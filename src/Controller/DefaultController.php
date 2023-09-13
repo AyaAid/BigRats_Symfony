@@ -33,6 +33,9 @@ class DefaultController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+            foreach ($data->getUser() as $user) {
+                $data->addUser($user);
+            }
             $this->createTricountService->createTricount($data, $request);
             return $this->redirectToRoute('app_login');
         }

@@ -4,6 +4,9 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\Tricounts;
+use App\Entity\User;
+use App\Entity\Users;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -73,10 +76,13 @@ class CreateTricountsType extends AbstractType
                     },
                 ]
             )
-            ->add('friends_emails', CollectionType::class, [
-                'entry_type' => EmailType::class,
-                'entry_options' => ['label' => false],
+            ->add('user', EntityType::class, [
+                'class' => Users::class,
+                'choice_label' => 'firstname',
+                'multiple' => true,
+                'expanded' => true,
             ])
+
             ->add(
                 'submit',
                 SubmitType::class,
