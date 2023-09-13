@@ -17,6 +17,7 @@ class ExpensesFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+
             ->add(
                 'title',
                 TextType::class,
@@ -57,6 +58,7 @@ class ExpensesFormType extends AbstractType
                     ],
                 ]
             );
+
         ;
     }
 
