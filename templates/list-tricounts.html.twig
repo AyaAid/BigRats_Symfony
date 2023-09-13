@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+</head>
+<body>
+<ul>
+    {% for tricount in tricountslist %}
+        <li>
+            <a href="/tricount/{{ tricount.id }}">{{ tricount.name }} {% if tricount.description != null %}->  {{ tricount.description }} {% endif %}
+                : {{ tricount.category }} -> {{ tricount.devise }}
+            </a></li>
+    {% endfor %}
+</ul>
+</body>
+</html>

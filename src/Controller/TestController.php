@@ -1,19 +1,21 @@
 <?php
 
+
 namespace App\Controller;
 
+use App\Entity\Tricounts;
 use App\Entity\Users;
 use App\Service\GetSessionUserService;
 use App\Service\GetTricountsByUserId;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends AbstractController
+class TestController extends AbstractController
 {
 
     private $GetTableByUserService;
     private $GetSessionUserService;
-
 
     public function __construct(GetTricountsByUserId $GetTableByUserService, GetSessionUserService $GetSessionUserService)
     {
@@ -21,12 +23,15 @@ class DefaultController extends AbstractController
         $this->GetSessionUserService = $GetSessionUserService;
     }
 
-    #[Route("/", name: "home_page")]
-    public function index()
+    #[Route("/authentication", name:"controller_test")]
+    public function index(): Response
     {
-        return $this->render('home_page.html.twig', [
-            'title' => 'Home Page',
-            'user_tricounts' => $this->GetTableByUserService->getTable(Users::class, $this->GetSessionUserService->getUser())
-        ]);
+        return $this->render('authentication.html.twig', ['name' => 'test']);
+    }
+
+    #[Route("/list-tricounts", name:"listtricounts")]
+    public function listtricounts(): Response
+    {
+        return $this->render('list-tricounts.html.twig', ['tricountslist' => $this->GetTableByUserService->getTable(Users::class, $this->GetSessionUserService->getUser())]);
     }
 }

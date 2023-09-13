@@ -30,7 +30,7 @@ class Tricounts
     #[ORM\Column(length: 255)]
     private ?string $devise = 'euro';
 
-    #[ORM\OneToMany(mappedBy: 'tricount', targetEntity: Expenses::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'Tricount', targetEntity: Expenses::class, orphanRemoval: true)]
     private Collection $expenses;
 
     public function __construct()

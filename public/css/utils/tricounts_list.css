@@ -1,0 +1,46 @@
+.tricounts_list_container_title {
+    padding: 10px;
+    background-color: rgb(128, 128, 128);
+    font-size: 24px;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.tricounts_list {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: darkgray;
+    border: rgb(128, 128, 128) 1px solid;
+    width: 100%;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+.tricount_link {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+}
+
+
+.tricount_info {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: black 1px solid;
+}
+
+.tricount_info_side {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
