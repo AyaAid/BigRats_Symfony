@@ -15,7 +15,7 @@ class Tricounts
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'tricounts')]
+    #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'Tricounts')]
     private Collection $user;
 
     #[ORM\Column(length: 255)]
@@ -73,6 +73,10 @@ class Tricounts
         return $this->name;
     }
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
     public function setName(string $name): static
     {
         $this->name = $name;

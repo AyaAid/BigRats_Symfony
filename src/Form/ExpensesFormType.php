@@ -16,6 +16,7 @@ class ExpensesFormType extends AbstractType
             ->add('value')
             ->add('created_at')
             ->add('user')
+            ->add('tricount')
         ;
     }
 

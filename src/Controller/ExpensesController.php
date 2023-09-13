@@ -25,6 +25,9 @@ class ExpensesController extends AbstractController
     {
         $expenses = new Expenses();
         $expenses->setCreatedAt(new \DateTimeImmutable());
+
+
+
         $form = $this->createForm(ExpensesFormType::class, $expenses);
         $form->add('save', SubmitType::class, [
             'label' => 'Spend',
