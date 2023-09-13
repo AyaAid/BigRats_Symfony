@@ -7,6 +7,7 @@ use App\Entity\Tricounts;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -72,6 +73,10 @@ class CreateTricountsType extends AbstractType
                     },
                 ]
             )
+            ->add('friends_emails', CollectionType::class, [
+                'entry_type' => EmailType::class,
+                'entry_options' => ['label' => false],
+            ])
             ->add(
                 'submit',
                 SubmitType::class,
