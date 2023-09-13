@@ -15,9 +15,7 @@ class Tricounts
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'tricounts', cascade:['persist','remove'])]
-    #[ORM\JoinTable(name: 'tricounts_users')]
-    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'Tricounts')]
     private Collection $user;
 
     #[ORM\Column(length: 255)]
@@ -32,15 +30,13 @@ class Tricounts
     #[ORM\Column(length: 255)]
     private ?string $devise = 'euro';
 
-    #[ORM\OneToMany(mappedBy: 'tricount', targetEntity: Expenses::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'Tricount', targetEntity: Expenses::class, orphanRemoval: true)]
     private Collection $expenses;
-
 
     public function __construct()
     {
         $this->user = new ArrayCollection();
         $this->expenses = new ArrayCollection();
-
     }
 
     public function getId(): ?int
@@ -77,6 +73,10 @@ class Tricounts
         return $this->name;
     }
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
     public function setName(string $name): static
     {
         $this->name = $name;
@@ -149,32 +149,4 @@ class Tricounts
 
         return $this;
     }
-
-    public function getUsersWithBalances(): array
-    {
-        $usersWithBalances = [];
-
-        foreach ($this->user as $user) {
-            $balance = 0;
-
-            foreach ($this->expenses as $expense) {
-                if ($expense->getUser() === $user) {
-                    $balance += $expense->getValue();
-                }
-            }
-
-            $usersWithBalances[] = [
-                'user' => $user,
-                'balance' => $balance,
-            ];
-        }
-
-        return $usersWithBalances;
-    }
-
-    public function countUsers(): int
-    {
-        return $this->user->count();
-    }
-
 }
