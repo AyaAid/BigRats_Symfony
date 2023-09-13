@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Tricounts;
 use App\Service\GetTableByIdService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TricountController extends AbstractController
