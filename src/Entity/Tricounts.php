@@ -33,6 +33,9 @@ class Tricounts
     #[ORM\OneToMany(mappedBy: 'tricount', targetEntity: Expenses::class, orphanRemoval: true)]
     private Collection $expenses;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $Number = null;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
@@ -142,6 +145,18 @@ class Tricounts
                 $expense->setTricount(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNumber(): ?int
+    {
+        return $this->Number;
+    }
+
+    public function setNumber(?int $Number): static
+    {
+        $this->Number = $Number;
 
         return $this;
     }
