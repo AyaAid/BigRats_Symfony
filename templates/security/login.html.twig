@@ -2,6 +2,15 @@
 
 {% block title %}Log in!{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200&display=swap" rel="stylesheet">
+
+{% endblock %}
+
 {% block body %}
 <form method="post">
     {% if error %}
@@ -14,18 +23,27 @@
         </div>
     {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+    <h1 class="h3 mb-3 font-weight-normal"></h1>
+    <div class="registrer">
+        <h2>Se connecter</h2>
+        <div class="rat">
+            <img src="/img/rat2.png">
+        </div>
+        <!--  <label for="inputEmail">Email</label> -->
+        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="email" autocomplete="email" placeholder="   Adresse mail" required autofocus>
+        <!-- <label for="inputPassword">Password</label> -->
+        <input type="password" name="password" id="inputPassword" class="password" autocomplete="current-password" placeholder="   Mot de passe" required>
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+
+        <button class="btn btn-lg btn-primary" type="submit">
+            Se connecter
+        </button>
+        <p class="text">Vous n'avez pas encore de compte ? <a class="connexion2" href="#">Inscription</a></p>
+    </div>
+
 </form>
 {% endblock %}
