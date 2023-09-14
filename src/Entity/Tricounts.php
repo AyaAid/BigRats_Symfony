@@ -17,6 +17,7 @@ class Tricounts
 
     #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'tricounts', cascade:['persist','remove'])]
     #[ORM\JoinTable(name: 'tricounts_users')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private Collection $user;
 
     #[ORM\Column(length: 255)]
@@ -31,7 +32,7 @@ class Tricounts
     #[ORM\Column(length: 255)]
     private ?string $devise = 'euro';
 
-    #[ORM\OneToMany(mappedBy: 'Tricount', targetEntity: Expenses::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'tricount', targetEntity: Expenses::class, orphanRemoval: true)]
     private Collection $expenses;
 
 

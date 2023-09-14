@@ -19,8 +19,18 @@ $this->entityManager = $entityManager;
     {
         if ($tricount->countUsers() > 0) {
             $tricount->removeUser($user);
+            if ($tricount->countUsers() === 0) {
+                $this->removeEmptyTricount($tricount);
+            }
+
             $this->entityManager->flush();
         }
+    }
+
+    private function removeEmptyTricount(Tricounts $tricount): void
+    {
+        $this->entityManager->remove($tricount);
+        $this->entityManager->flush();
     }
 
 }
