@@ -1,13 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>List</title>
-</head>
-<body>
-<ul>
-    <li>{{ tricountArray.name }}</li>
-</ul>
-<a href="/tricount/{{ tricountArray.id }}/new-expenses">Créer une dépense</a>
-</body>
-</html>
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/utils/header.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/utils/tricounts_list.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/home_page.css') }}" type="text/css">
+{% endblock %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    {% include 'utils/header.html.twig' %}
+    <main class="main">
+        <div class="expenses_list_container">
+            {% include 'utils/expenses_list.html.twig' with {'expenseArray': user_expenses, 'userArray': tricount_user } %}
+        </div>
+    </main>
+{% endblock %}
