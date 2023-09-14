@@ -33,9 +33,13 @@ class EditExpensesType extends AbstractType
                 'label' => 'Valeur',
                 'currency' => 'EUR',
             ])
-            ->add('user', EntityType::class, [
+            ->add('concerned_users', EntityType::class, [
                 'class' => Users::class,
                 'choice_label' => 'firstname',
+                'multiple' => true, // Allow multiple selection
+                'expanded' => true, // If you want checkboxes instead of a select box
+                'by_reference' => false,
+
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Enregistrer',
