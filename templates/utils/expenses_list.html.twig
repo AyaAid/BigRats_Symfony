@@ -1,0 +1,15 @@
+<h2 class="expense_list_container_title">Liste des dépenses disponibles</h2>
+<ul class="expense_list">
+    {% for expense in expenseArray %}
+        <a href="/expense/{{expense.id}}">
+            <li>
+
+                <h2>{{expense.title }}</h2>
+                <p>{{expense.value }} </p>
+                <p> Crée le {{ expense.CreatedAt.format('Y-m-d H:i:s') }}</p>
+                <p>Créé par {{ expense.User.firstname }}:</p>
+
+            </li>
+        </a>
+    {% endfor %}
+</ul>

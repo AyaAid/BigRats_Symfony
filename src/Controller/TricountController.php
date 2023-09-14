@@ -6,6 +6,7 @@ use App\Entity\Tricounts;
 use App\Service\EditTricountService;
 use App\Service\GetTableByIdService;
 use App\Service\LeaveTricountsService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,12 +18,14 @@ class TricountController extends AbstractController
 
     private $GetTableByIdService;
     private $leaveTricountsService;
+    private $entityManager;
 
-    public function __construct(GetTableByIdService $GetTableByIdService, LeaveTricountsService $leaveTricountsService, EditTricountService $editTricountService)
+    public function __construct(GetTableByIdService $GetTableByIdService, LeaveTricountsService $leaveTricountsService, EditTricountService $editTricountService, EntityManagerInterface $entityManager)
     {
         $this->GetTableByIdService = $GetTableByIdService;
         $this->leaveTricountsService = $leaveTricountsService;
         $this->editTricountService = $editTricountService;
+        $this->entityManager = $entityManager;
     }
 
     #[Route(path: '/tricount/{tricountId}', name: 'app_tricount')]
@@ -30,11 +33,21 @@ class TricountController extends AbstractController
     {
         $tricount = $this->GetTableByIdService->getTable(Tricounts::class, $tricountId);
 
+        $expenses = $this->entityManager->createQuery('SELECT e FROM App\Entity\Expenses e WHERE e.tricount = :tricount')
+            ->setParameter('tricount', $tricount)
+            ->getResult();
+
+        $userOfTricount = $this->entityManager->createQuery('SELECT u FROM App\Entity\Expenses u WHERE u.user = :user')
+            ->setParameter('user', $tricount)
+            ->getResult();
+
         if (!$tricount) {
             return $this->render('page_not_found.twig', ['message' => 'Le tricount n\'existe pas']);
         }
 
-        return $this->render('tricount.html.twig', ['tricountArray' => $tricount[0]]);
+        return $this->render('tricount.html.twig', ['tricountArray' => $tricount[0],
+            'user_expenses' => $expenses,
+            'tricount_user' => $userOfTricount]);
     }
 
     #[Route(path: '/tricount/{tricountId}/quit', name: 'app_quit_tricount', methods: ['POST'])]
@@ -62,6 +75,7 @@ class TricountController extends AbstractController
     public function editTricount(Request $request, string $tricountId): Response
     {
         $tricount = $this->GetTableByIdService->getTable(Tricounts::class, $tricountId);
+
 
         if (empty($tricount)) {
             throw $this->createNotFoundException('Le tricount n\'existe pas');

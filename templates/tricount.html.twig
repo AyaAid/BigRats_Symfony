@@ -5,9 +5,11 @@
     <title>List</title>
 </head>
 <body>
+
 <ul>
     <li>{{ tricountArray.name }}</li>
 </ul>
+{% include 'utils/expenses_list.html.twig' with {'expenseArray': user_expenses, 'userArray': tricount_user } %}
 <a href="/tricount/{{ tricountArray.id }}/new-expenses">Créer une dépense</a>
 </body>
 </html>
