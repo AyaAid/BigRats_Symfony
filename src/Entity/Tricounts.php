@@ -15,7 +15,8 @@ class Tricounts
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'tricounts')]
+    #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'tricounts', cascade:['persist','remove'])]
+    #[ORM\JoinTable(name: 'tricounts_users')]
     private Collection $user;
 
     #[ORM\Column(length: 255)]
@@ -33,10 +34,12 @@ class Tricounts
     #[ORM\OneToMany(mappedBy: 'Tricount', targetEntity: Expenses::class, orphanRemoval: true)]
     private Collection $expenses;
 
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
         $this->expenses = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -167,4 +170,10 @@ class Tricounts
 
         return $usersWithBalances;
     }
+
+    public function countUsers(): int
+    {
+        return $this->user->count();
+    }
+
 }

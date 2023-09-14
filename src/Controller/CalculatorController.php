@@ -20,19 +20,15 @@ class CalculatorController extends AbstractController
     #[Route('/calculator/{tricount}', name: 'calculator')]
     public function showCalcul(Tricounts $tricount): Response
     {
-        // Obtenez la liste des utilisateurs avec leurs soldes
         $usersWithBalances = $tricount->getUsersWithBalances();
 
-        // Calculez le montant total des dépenses
         $totalExpenses = 0;
         foreach ($tricount->getExpenses() as $expense) {
             $totalExpenses += $expense->getValue();
         }
 
-        // Calculez le montant moyen par utilisateur
         $averageExpense = $totalExpenses / count($usersWithBalances);
 
-        // Effectuez la répartition des dépenses
         foreach ($usersWithBalances as &$userWithBalance) {
             $userBalance = $userWithBalance['balance'];
             $userWithBalance['netAmount'] = $userBalance - $averageExpense;
