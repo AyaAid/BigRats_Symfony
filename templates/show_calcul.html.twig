@@ -1,4 +1,3 @@
 {% for userId, userWithBalance in usersWithBalances %}
-    {% set user = tricount.user[userId] %}
     {{ user.firstname }}: {{ userWithBalance.netAmount|number_format(2) }}<br>
 {% endfor %}

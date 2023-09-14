@@ -8,35 +8,38 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class CalculatorService
 {
-private EntityManagerInterface $entityManager;
+    private EntityManagerInterface $entityManager;
 
-public function __construct(EntityManagerInterface $entityManager)
-{
-$this->entityManager = $entityManager;
-}
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
-public function calculateDebts(Tricounts $tricount): array
-{
+    public function calculateDebts(Tricounts $tricount): array
+    {
+        $expenses = $this->entityManager->getRepository(Expenses::class)->findBy(['tricount' => $tricount]);
 
-$expenses = $this->entityManager->getRepository(Expenses::class)->findBy(['tricount' => $tricount]);
+        $balances = [];
 
+        foreach ($expenses as $expense) {
+            $totalAmount = $expense->getValue();
+            $expenseUsers = $expense->getConcernedUsers();
 
-$balances = [];
+            if (count($expenseUsers) === 0) {
+                continue;
+            }
 
+            $share = $totalAmount / count($expenseUsers);
 
-foreach ($expenses as $expense) {
-$totalAmount = $expense->getValue();
-$user = $expense->getUser();
+            foreach ($expenseUsers as $user) {
+                $userId = $user->getId();
+                if (!isset($balances[$userId])) {
+                    $balances[$userId] = 0;
+                }
+                $balances[$userId] += $share;
+            }
+        }
 
-
-$share = $totalAmount / count($tricount->getUser());
-
-if (!isset($balances[$user->getId()])) {
-$balances[$user->getId()] = 0;
-}
-$balances[$user->getId()] += $share;
-}
-
-return $balances;
-}
+        return $balances;
+    }
 }
