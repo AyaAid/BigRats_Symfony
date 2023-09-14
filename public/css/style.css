@@ -4,7 +4,7 @@
 }
 
 body{
-    background-color: #3b82f6;
+    background-color: #94bdff;
 }
 
 .registrer{
@@ -166,4 +166,54 @@ h2{
     transform: translate(-50%);
     color: whitesmoke;
 
+}
+
+/*--------------------- Liste des dépenses -----------------------*/
+
+
+.zone-depense{
+position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    margin-left: 5%;
+}
+
+.zone-depense h3{
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 1.8rem;
+}
+
+.liste-depense{
+    width: 400px;
+    height: 60vh;
+    border-radius: 5px;
+    background-color: #a8c9ff;
+    overflow-y: scroll;
+}
+
+.depense{
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    width: 99%;
+    height: 60px;
+    background-color: #63a4ff;
+    border-bottom: 1px solid darkgrey;
+    list-style: none;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    border-radius: 10px;
+
+}
+
+.depense:hover{
+    width: 100%;
+    height: 62px;
+    border-radius: 10px;
+    transition: 0.2s;
 }
