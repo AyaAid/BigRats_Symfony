@@ -7,5 +7,9 @@
 <body>
 {% include 'utils/expenses_list.html.twig' with {'expenseArray': user_expenses, 'userArray': tricount_user } %}
 <a href="/tricount/{{ tricountArray.id }}/new-expenses">Créer une dépense</a>
+<a href="{{ path('app_edit_tricount', {'tricountId': tricountArray.id}) }}">Éditer le Tricount</a>
+<form method="POST" action="{{ path('app_quit_tricount', {'tricountId': tricountArray.id}) }}">
+    <button type="submit">Quitter le Tricount</button>
+</form>
 </body>
 </html>

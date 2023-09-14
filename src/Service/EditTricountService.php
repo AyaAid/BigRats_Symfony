@@ -4,6 +4,7 @@ namespace App\Service;
 use App\Entity\Tricounts;
 use Doctrine\ORM\EntityManagerInterface;
 
+
 class EditTricountService
 {
     private EntityManagerInterface $entityManager;
@@ -13,13 +14,8 @@ class EditTricountService
         $this->entityManager = $entityManager;
     }
 
-    public function editTricount(Tricounts $tricount, array $data): void
+    public function editTricount(Tricounts $tricount): void
     {
-        $tricount->setName($data['name']);
-        $tricount->setDescription($data['description']);
-        $tricount->setCategory($data['category']);
-        $tricount->setDevise($data['devise']);
-
         $this->entityManager->flush();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Tricounts;
+use App\Form\TricountEditType;
 use App\Service\EditTricountService;
 use App\Service\GetTableByIdService;
 use App\Service\LeaveTricountsService;
@@ -87,8 +88,7 @@ class TricountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $this->editTricountService->editTricount($tricount, $data);
+            $this->editTricountService->editTricount($tricount);
             return $this->redirectToRoute('app_tricount', ['tricountId' => $tricount->getId()]);
         }
 
@@ -97,4 +97,5 @@ class TricountController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
 }
