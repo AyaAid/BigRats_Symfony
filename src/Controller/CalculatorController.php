@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class CalculatorController extends AbstractController
 {
     private CalculatorService $calculator;
@@ -16,11 +17,10 @@ class CalculatorController extends AbstractController
     {
         $this->calculator = $calculator;
     }
-
     #[Route('/calculator/{tricount}', name: 'calculator')]
     public function showCalcul(Tricounts $tricount): Response
     {
-        $usersWithBalances = $this->calculator->calculateDebts($tricount);
+        $usersWithBalances = $tricount->getUsersWithBalances();
 
         $totalExpenses = 0;
         foreach ($tricount->getExpenses() as $expense) {
@@ -29,18 +29,14 @@ class CalculatorController extends AbstractController
 
         $averageExpense = $totalExpenses / count($usersWithBalances);
 
-        $usersWithBalancesAssociative = [];
-
-        foreach ($usersWithBalances as $userId => $userBalance) {
-            $usersWithBalancesAssociative[$userId] = [
-                'balance' => $userBalance,
-                'netAmount' => $userBalance - $averageExpense,
-            ];
+        foreach ($usersWithBalances as &$userWithBalance) {
+            $userBalance = $userWithBalance['balance'];
+            $userWithBalance['netAmount'] = $userBalance - $averageExpense;
         }
 
         return $this->render('show_calcul.html.twig', [
             'tricount' => $tricount,
-            'usersWithBalances' => $usersWithBalancesAssociative,
+            'usersWithBalances' => $usersWithBalances,
         ]);
     }
 }
