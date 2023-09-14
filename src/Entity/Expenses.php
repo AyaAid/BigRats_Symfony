@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ExpensesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ExpensesRepository::class)]
@@ -28,7 +30,15 @@ class Expenses
 
     #[ORM\ManyToOne(inversedBy: 'expenses')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?tricounts $tricount = null;
+    private ?Tricounts $tricount = null;
+
+    #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'concerned_expenses')]
+    private Collection $concerned_users;
+
+    public function __construct()
+    {
+        $this->concerned_users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -83,14 +93,38 @@ class Expenses
         return $this;
     }
 
-    public function getTricount(): ?tricounts
+    public function getTricount(): ?Tricounts
     {
         return $this->tricount;
     }
 
-    public function setTricount(?tricounts $tricount): static
+    public function setTricount(?Tricounts $tricount): static
     {
         $this->tricount = $tricount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Users>
+     */
+    public function getConcernedUsers(): Collection
+    {
+        return $this->concerned_users;
+    }
+
+    public function addConcernedUser(Users $concernedUser): static
+    {
+        if (!$this->concerned_users->contains($concernedUser)) {
+            $this->concerned_users->add($concernedUser);
+        }
+
+        return $this;
+    }
+
+    public function removeConcernedUser(Users $concernedUser): static
+    {
+        $this->concerned_users->removeElement($concernedUser);
 
         return $this;
     }

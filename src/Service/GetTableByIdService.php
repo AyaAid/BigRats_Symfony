@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class GetTableByIdService
 {
 
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -15,7 +15,7 @@ class GetTableByIdService
     }
 
 
-    public function getTable($table, $id)
+    public function getTable($table, $id): array
     {
         return $this->entityManager->getRepository($table)->findBy(['id' => $id]);
     }
