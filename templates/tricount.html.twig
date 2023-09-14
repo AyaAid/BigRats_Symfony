@@ -16,11 +16,25 @@
 
 
 <body>
-{% include 'utils/expenses_list.html.twig' with {'expenseArray': user_expenses, 'userArray': tricount_user } %}
-<a href="/tricount/{{ tricountArray.id }}/new-expenses">Créer une dépense</a>
-<a href="{{ path('app_edit_tricount', {'tricountId': tricountArray.id}) }}">Éditer le Tricount</a>
+<div class="zone-depense">
+    <h3>Liste des dépenses</h3>
+    <div class="liste-depense">
+
+        {% include 'utils/expenses_list.html.twig' with {'expenseArray': user_expenses, 'userArray': tricount_user } %}
+
+    </div>
+
+    <div class="my-button">
+        <a class="btn" id="btn2-create" href="/tricount/{{ tricountArray.id }}/new-expenses">Créer une dépense</a>
+        <a class="btn" id="btn2" href="{{ path('app_edit_tricount', {'tricountId': tricountArray.id}) }}">Éditer le Tricount</a>
+        <a class="btn" id="btn2-quit" type="submit">Quitter le Tricount</a>
+    </div>
+
+</div>
+
+
 <form method="POST" action="{{ path('app_quit_tricount', {'tricountId': tricountArray.id}) }}">
-    <button type="submit">Quitter le Tricount</button>
+
 </form>
 </body>
 </html>
