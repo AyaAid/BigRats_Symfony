@@ -1,0 +1,3 @@
+{% for userWithBalance in usersWithBalances %}
+    {{ userWithBalance.user.firstname }}: {{ userWithBalance.netAmount }}<br>
+{% endfor %}

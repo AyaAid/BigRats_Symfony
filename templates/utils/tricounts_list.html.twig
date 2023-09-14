@@ -1,0 +1,17 @@
+<h2 class="tricounts_list_container_title">Liste des tricounts disponibles</h2>
+<ul class="tricounts_list">
+    {% for tricount in tricountArray %}
+        <li class="tricount_info">
+            <a href="/tricount/{{ tricount.id }}" class="tricount_link ">
+                <div class="tricount_info_side">
+                    <h2>{{ tricount.name }}</h2>
+                    <p>{{ tricount.description }}</p>
+                </div>
+                <div class="tricount_info_side">
+                    <p>{{ tricount.category }}</p>
+                    <p>{{ tricount.devise }}</p>
+                </div>
+            </a>
+        </li>
+    {% endfor %}
+</ul>
