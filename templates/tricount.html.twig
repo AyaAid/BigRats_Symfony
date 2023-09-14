@@ -3,12 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>List</title>
+
+    {% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200&display=swap" rel="stylesheet">
+
+    {% endblock %}
 </head>
+
+
 <body>
+
+<div class="zone-depense">
+    <h3>Liste des dépenses</h3>
+<div class="liste-depense">
 <ul>
     {% for tricount in tricountArray %}
-        <li>{{ tricount.name }}</li>
+        <li class="depense">{{ tricount.name }}</li>
+
+
     {% endfor %}
 </ul>
+</div>
+    <a href="#" class="btn">Ajouter une dépense</a>
+</div>
 </body>
 </html>
