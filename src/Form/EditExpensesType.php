@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Expenses;
+use App\Entity\Tricounts;
 use App\Entity\Users;
+use App\Service\GetUserByExpenses;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -15,52 +17,29 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class EditExpensesType extends AbstractType
 {
+    private $getUserByExpenses;
+
+    public function __construct(GetUserByExpenses $getUserByExpenses)
+    {
+        $this->getUserByExpenses = $getUserByExpenses;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add(
-                'title',
-                TextType::class,
-                [
-                    'label' => 'Titre',
-                    'attr' => [
-                        'class' => 'form_title',
-                        'maxlength' => 32,
-                        'placeholder' => 'Titre',
-
-                    ],
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => 'Veuillez saisir un titre',
-                        ]),
-                    ],
-                    'property_path' => 'title',
-                ]
-            )
-            ->add(
-                'value',
-                MoneyType::class,
-                [
-                    'label' => 'Valeur',
-                    'required' => false,
-                    'attr' => [
-                        'class' => 'form_value',
-                        'maxlength' => 8,
-                        'placeholder' => 'Valeur',
-                    ],
-                    'property_path' => 'value',
-                ]
-            )
-            ->add(
-                'submit',
-                SubmitType::class,
-                [
-                    'label' => 'Créer une dépense',
-                    'attr' => [
-                        'class' => 'btn btn-primary',
-                    ],
-                ]
-            );
+            ->add('title', TextType::class, [
+                'label' => 'Titre',
+            ])
+            ->add('value', MoneyType::class, [
+                'label' => 'Valeur',
+                'currency' => 'EUR',
+            ])
+            ->add('user', EntityType::class, [
+                'class' => Users::class,
+                'choice_label' => 'firstname',
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Enregistrer',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

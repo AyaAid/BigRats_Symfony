@@ -12,8 +12,10 @@ use App\Service\EditExpensesService;
 use App\Service\GetExpensesConcernedUserService;
 use App\Service\GetTableByIdService;
 use App\Service\GetTableService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ExpenseController extends AbstractController
@@ -73,22 +75,26 @@ class ExpenseController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/expenses/{expensesId}/edit', name: 'app_expenses_edit')]
-    public function edit(Request $request, $expensesId) {
-        $form = $this->createForm(EditExpensesType::class);
+    #[Route(path: '/expenses/{id}/edit', name: 'app_expenses_edit')]
+    public function editExpense(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    {
+        $expense = $entityManager->getRepository(Expenses::class)->find($id);
+
+        if (!$expense) {
+            throw $this->createNotFoundException('La dépense n\'existe pas');
+        }
+        $form = $this->createForm(EditExpensesType::class, $expense);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $this->editExpensesService->editExpense($this->GetTableByIdService->getTable(Expenses::class, $expensesId)[0], $data);
-            return $this->redirectToRoute('app_login');
+            $entityManager->flush();
+
+            return $this->redirectToRoute('home_page');
         }
 
-        $content = $this->render('create_tricount_modal.html.twig', [
+        return $this->render('edit_expenses.html.twig', [
             'form' => $form->createView(),
         ]);
-
-        return $content;
     }
 }

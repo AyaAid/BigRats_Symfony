@@ -10,7 +10,15 @@
 {% block body %}
     {% include 'utils/header.html.twig' %}
     <main class="main">
-        {{ form(form) }}
+        {{ form_start(form) }}
+
+        {{ form_row(form.title) }}
+        {{ form_row(form.value) }}
+        {{ form_row(form.user) }}
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+        {{ form_end(form) }}
     </main>
 {% endblock %}
 
