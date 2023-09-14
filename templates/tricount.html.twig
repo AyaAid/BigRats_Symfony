@@ -6,12 +6,8 @@
 </head>
 <body>
 <ul>
-    {% for tricount in tricountArray %}
-        <li>{{ tricount.name }}</li>
-        <form method="POST" action="{{ path('app_quit_tricount', {'tricountId': tricount.id}) }}">
-            <button type="submit">Quitter le Tricount</button>
-        </form>
-    {% endfor %}
+    <li>{{ tricountArray.name }}</li>
 </ul>
+<a href="/tricount/{{ tricountArray.id }}/new-expenses">Créer une dépense</a>
 </body>
 </html>

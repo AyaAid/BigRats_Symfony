@@ -34,7 +34,7 @@ class TricountController extends AbstractController
             return $this->render('page_not_found.twig', ['message' => 'Le tricount n\'existe pas']);
         }
 
-        return $this->render('tricount.html.twig', ['tricountArray' => $tricount]);
+        return $this->render('tricount.html.twig', ['tricountArray' => $tricount[0]]);
     }
 
     #[Route(path: '/tricount/{tricountId}/quit', name: 'app_quit_tricount', methods: ['POST'])]
