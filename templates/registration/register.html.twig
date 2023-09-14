@@ -1,23 +1,57 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Register{% endblock %}
+ {% block stylesheets %}
+     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200&display=swap" rel="stylesheet">
+
+ {% endblock %}
+
 
 {% block body %}
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
 
-    {{ form_errors(registrationForm) }}
+    <div class="registrer">
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
+        <h2>S'enregistrer</h2>
+        <div class="rat">
+            <img src="/img/rat2.png">
+        </div>
+
+        {{ form_errors(registrationForm) }}
+
+        {{ form_start(registrationForm) }}
+        {{ form_widget(registrationForm.firstname, {
+            label: 'Ursname'
+        }) }}
+        {{ form_widget(registrationForm.lastname, {
+            label: 'Name'
+        }) }}
+        {{ form_widget(registrationForm.email) }}
+        {{ form_widget(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+            <div class="agree-div">
+                <p class="agree">J'accepte les termes</p>
+                {{ form_widget(registrationForm.agreeTerms) }}
+            </div>
+
+            <button type="submit" class="btn">S'enregistrer</button>
+
+
+
+        {{ form_end(registrationForm) }}
+
+
+        <p class="text">Vous avez déja un compte ? <a class="connexion2" href="#">connexion</a></p>
+    </div>
+
+
 {% endblock %}
