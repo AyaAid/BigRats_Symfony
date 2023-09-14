@@ -9,5 +9,6 @@
     <li>{{ tricountArray.name }}</li>
 </ul>
 <a href="/tricount/{{ tricountArray.id }}/new-expenses">Créer une dépense</a>
+<a href="{{ path('app_edit_tricount', {'tricountId': tricountArray.id}) }}">Éditer le Tricount</a>
 </body>
 </html>
