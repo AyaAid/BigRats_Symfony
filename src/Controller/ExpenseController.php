@@ -59,9 +59,18 @@ class ExpenseController extends AbstractController
     #[Route(path: '/expenses/{expensesId}/delete', name: 'app_expenses_delete')]
     public function deleteExpenses(string $expensesId)
     {
+        $tricountId = $this->GetTableByIdService->getTable(Expenses::class, $expensesId)[0]->getTricount()->getId();
+
         $this->DeleteExpenseService->deleteExpense($this->GetTableByIdService->getTable(Expenses::class, $expensesId)[0]);
 
-        return $this->redirectToRoute('home_page');
+        return $this->redirectToRoute('app_tricount', ['tricountId' => $tricountId]);
+    }
+
+    #[Route(path: '/expenses/{expensesId}', name: 'app_expenses_show')]
+    public function index($expensesId) {
+        return $this->render('expenses_info.html.twig', [
+            'expensesId' => $expensesId,
+        ]);
     }
 
     #[Route(path: '/expenses/{expensesId}/edit', name: 'app_expenses_edit')]
