@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Expenses;
 use App\Form\ExpensesFormType;
 use App\Service\CreateExpenseService;
+use App\Service\DeleteExpenseService;
 use App\Service\GetExpensesConcernedUserService;
+use App\Service\GetTableByIdService;
 use App\Service\GetTableService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,12 +18,15 @@ class ExpenseController extends AbstractController
     private $createExpenseService;
     private $GetExpensesConcernedUserService;
     private $GetTableService;
+    private $GetTableByIdService;
 
-    public function __construct(CreateExpenseService $createExpenseService, GetExpensesConcernedUserService $GetExpensesConcernedUserService, GetTableService $GetTableService)
+    public function __construct(CreateExpenseService $createExpenseService, GetExpensesConcernedUserService $GetExpensesConcernedUserService, GetTableService $GetTableService, DeleteExpenseService $DeleteExpensesService, GetTableByIdService $GetTableByIdService)
     {
         $this->createExpenseService = $createExpenseService;
         $this->GetExpensesConcernedUserService = $GetExpensesConcernedUserService;
         $this->GetTableService = $GetTableService;
+        $this->DeleteExpenseService = $DeleteExpensesService;
+        $this->GetTableByIdService = $GetTableByIdService;
     }
 
     #[Route(path: '/tricount/{tricountId}/new-expenses', name: 'app_tricount_expenses')]
@@ -42,5 +47,13 @@ class ExpenseController extends AbstractController
         return $this->render('expenses.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route(path: '/expenses/{expensesId}', name: 'app_expenses_delete')]
+    public function deleteExpenses(string $expensesId)
+    {
+        $this->DeleteExpenseService->deleteExpense($this->GetTableByIdService->getTable(Expenses::class, $expensesId)[0]);
+
+        return $this->redirectToRoute('home_page');
     }
 }
