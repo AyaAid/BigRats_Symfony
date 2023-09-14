@@ -1,21 +1,22 @@
 <?php
+
 namespace App\Service;
 
 use App\Entity\Tricounts;
 use Doctrine\ORM\EntityManagerInterface;
 
-
-class EditTricountService
+class GetUserByExpenses
 {
-    private EntityManagerInterface $entityManager;
+    private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-    public function editTricount(Tricounts $tricount): void
+
+    public function getTable($table, $tricountId)
     {
-        $this->entityManager->flush();
+        return $this->entityManager->getRepository($table)->find($tricountId)->getUser();
     }
 }

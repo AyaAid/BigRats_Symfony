@@ -16,19 +16,11 @@
 
 
 <body>
-
-<div class="zone-depense">
-    <h3>Liste des dépenses</h3>
-<div class="liste-depense">
-<ul>
-    {% for tricount in tricountArray %}
-        <li class="depense">{{ tricount.name }}</li>
-
-
-    {% endfor %}
-</ul>
-</div>
-    <a href="#" class="btn">Ajouter une dépense</a>
-</div>
+{% include 'utils/expenses_list.html.twig' with {'expenseArray': user_expenses, 'userArray': tricount_user } %}
+<a href="/tricount/{{ tricountArray.id }}/new-expenses">Créer une dépense</a>
+<a href="{{ path('app_edit_tricount', {'tricountId': tricountArray.id}) }}">Éditer le Tricount</a>
+<form method="POST" action="{{ path('app_quit_tricount', {'tricountId': tricountArray.id}) }}">
+    <button type="submit">Quitter le Tricount</button>
+</form>
 </body>
 </html>

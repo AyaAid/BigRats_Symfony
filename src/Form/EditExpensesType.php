@@ -2,14 +2,8 @@
 
 namespace App\Form;
 
-namespace App\Form;
-
 use App\Entity\Expenses;
-use App\Entity\Tricounts;
 use App\Entity\Users;
-use App\Repository\UsersRepository;
-use App\Service\GetUserByExpenses;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -19,20 +13,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class ExpensesFormType extends AbstractType
+class EditExpensesType extends AbstractType
 {
-
-    private $getUserByExpenses;
-
-    public function __construct(GetUserByExpenses $getUserByExpenses)
-    {
-        $this->getUserByExpenses = $getUserByExpenses;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $tricountId = $options['tricountId'];
-
         $builder
             ->add(
                 'title',
@@ -67,14 +51,6 @@ class ExpensesFormType extends AbstractType
                     'property_path' => 'value',
                 ]
             )
-            ->add('user', EntityType::class, [
-                'class' => Users::class,
-                'choices' => $this->getUserByExpenses->getTable(Tricounts::class, $tricountId),
-                'choice_label' => 'firstname',
-                'multiple' => true,
-                'expanded' => true,
-                'property_path' => 'concerned_users',
-            ])
             ->add(
                 'submit',
                 SubmitType::class,
@@ -91,7 +67,6 @@ class ExpensesFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Expenses::class,
-            'tricountId' => null,
         ]);
     }
 }

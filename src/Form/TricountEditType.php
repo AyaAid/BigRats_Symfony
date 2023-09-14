@@ -2,84 +2,80 @@
 
 namespace App\Form;
 
-namespace App\Form;
-
-use App\Entity\Expenses;
+use App\Entity\Category;
 use App\Entity\Tricounts;
 use App\Entity\Users;
-use App\Repository\UsersRepository;
-use App\Service\GetUserByExpenses;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class ExpensesFormType extends AbstractType
+class TricountEditType extends AbstractType
 {
-
-    private $getUserByExpenses;
-
-    public function __construct(GetUserByExpenses $getUserByExpenses)
-    {
-        $this->getUserByExpenses = $getUserByExpenses;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $tricountId = $options['tricountId'];
-
         $builder
             ->add(
-                'title',
+                'name',
                 TextType::class,
                 [
-                    'label' => 'Titre',
+                    'label' => 'Title',
                     'attr' => [
                         'class' => 'form_title',
                         'maxlength' => 32,
-                        'placeholder' => 'Titre',
-
+                        'placeholder' => 'Title',
                     ],
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => 'Veuillez saisir un titre',
-                        ]),
-                    ],
-                    'property_path' => 'title',
                 ]
             )
             ->add(
-                'value',
-                MoneyType::class,
+                'description',
+                TextType::class,
                 [
-                    'label' => 'Valeur',
+                    'label' => 'Description',
                     'required' => false,
                     'attr' => [
-                        'class' => 'form_value',
-                        'maxlength' => 8,
-                        'placeholder' => 'Valeur',
+                        'class' => 'form_description',
+                        'maxlength' => 54,
+                        'placeholder' => 'Description',
+                    ]
+                ]
+            )
+            ->add('category',
+                ChoiceType::class,
+                [
+                    'placeholder' => 'Choisissez une catégorie',
+                    'choices' => [
+                        new Category('sport'),
+                        new Category('vacances'),
+                        new Category('maison'),
+                        new Category('autres'),
                     ],
-                    'property_path' => 'value',
+                    'choice_value' => 'name',
+                    'choice_label' => 'name',
+                    'choice_attr' => function (?Category $category): array {
+                        return $category ? ['form_class' => 'category_' . strtolower($category->getName())] : [];
+                    },
                 ]
             )
             ->add('user', EntityType::class, [
                 'class' => Users::class,
-                'choices' => $this->getUserByExpenses->getTable(Tricounts::class, $tricountId),
                 'choice_label' => 'firstname',
                 'multiple' => true,
                 'expanded' => true,
-                'property_path' => 'concerned_users',
+                'attr' => [
+                    'data-max' => 50,
+                ],
             ])
+
             ->add(
                 'submit',
                 SubmitType::class,
                 [
-                    'label' => 'Créer une dépense',
+                    'label' => 'Modifier Tricount',
                     'attr' => [
                         'class' => 'btn btn-primary',
                     ],
@@ -90,8 +86,7 @@ class ExpensesFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Expenses::class,
-            'tricountId' => null,
+            'data_class' => Tricounts::class,
         ]);
     }
 }
