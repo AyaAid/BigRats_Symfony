@@ -39,7 +39,9 @@ class ExpenseController extends AbstractController
     {
         $expense = new Expenses();
 
-        $form = $this->createForm(ExpensesFormType::class, $expense);
+        $form = $this->createForm(ExpensesFormType::class, $expense, [
+            'tricountId' => $tricountId,
+        ]);
 
         $form->handleRequest($request);
 
