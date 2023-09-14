@@ -52,12 +52,16 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\ManyToMany(targetEntity: Expenses::class, mappedBy: 'concerned_users')]
+    private Collection $concerned_expenses;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
         $this->expenses = new ArrayCollection();
         $this->tricounts = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
+        $this->concerned_expenses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -266,6 +270,33 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Expenses>
+     */
+    public function getConcernedExpenses(): Collection
+    {
+        return $this->concerned_expenses;
+    }
+
+    public function addConcernedExpense(Expenses $concernedExpense): static
+    {
+        if (!$this->concerned_expenses->contains($concernedExpense)) {
+            $this->concerned_expenses->add($concernedExpense);
+            $concernedExpense->addConcernedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConcernedExpense(Expenses $concernedExpense): static
+    {
+        if ($this->concerned_expenses->removeElement($concernedExpense)) {
+            $concernedExpense->removeConcernedUser($this);
+        }
 
         return $this;
     }

@@ -6,9 +6,8 @@
 </head>
 <body>
 <ul>
-    {% for tricount in tricountArray %}
-        <li>{{ tricount.name }}</li>
-    {% endfor %}
+    <li>{{ tricountArray.name }}</li>
 </ul>
+<a href="/tricount/{{ tricountArray.id }}/new-expenses">Créer une dépense</a>
 </body>
 </html>
