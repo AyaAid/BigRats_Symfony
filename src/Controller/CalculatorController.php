@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Tricounts;
+use App\Entity\Users;
 use App\Service\CalculatorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +19,16 @@ class CalculatorController extends AbstractController
     }
 
     #[Route('/calculator/{tricount}', name: 'calculator')]
-    public function showCalcul(Tricounts $tricount): Response
+    public function showCalcul(Tricounts $tricount, CalculatorService $calculator): Response
     {
-        $usersWithBalances = $this->calculator->calculateDebts($tricount);
+        $usersWithBalances = $calculator->calculateDebts($tricount);
+
+        $users = $this->getDoctrine()->getRepository(Users::class)->findBy(['id' => array_keys($usersWithBalances)]);
+
+        $usersData = [];
+        foreach ($users as $user) {
+            $usersData[$user->getId()] = $user;
+        }
 
         $totalExpenses = 0;
         foreach ($tricount->getExpenses() as $expense) {
@@ -29,18 +37,10 @@ class CalculatorController extends AbstractController
 
         $averageExpense = $totalExpenses / count($usersWithBalances);
 
-        $usersWithBalancesAssociative = [];
-
-        foreach ($usersWithBalances as $userId => $userBalance) {
-            $usersWithBalancesAssociative[$userId] = [
-                'balance' => $userBalance,
-                'netAmount' => $userBalance - $averageExpense,
-            ];
-        }
-
         return $this->render('show_calcul.html.twig', [
             'tricount' => $tricount,
-            'usersWithBalances' => $usersWithBalancesAssociative,
+            'usersData' => $usersData,
+            'usersWithBalances' => $usersWithBalances,
         ]);
     }
 }

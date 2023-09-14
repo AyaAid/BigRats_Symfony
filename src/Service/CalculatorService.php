@@ -5,8 +5,9 @@ namespace App\Service;
 use App\Entity\Expenses;
 use App\Entity\Tricounts;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class CalculatorService
+class CalculatorService extends AbstractController
 {
     private EntityManagerInterface $entityManager;
 
@@ -23,19 +24,16 @@ class CalculatorService
 
         foreach ($expenses as $expense) {
             $totalAmount = $expense->getValue();
-            $expenseUsers = $expense->getConcernedUsers();
-
-            if (count($expenseUsers) === 0) {
-                continue;
-            }
-
-            $share = $totalAmount / count($expenseUsers);
-
-            foreach ($expenseUsers as $user) {
+            $usersCollection = $expense->getUser();
+            foreach ($usersCollection as $user) {
                 $userId = $user->getId();
+
                 if (!isset($balances[$userId])) {
                     $balances[$userId] = 0;
                 }
+
+                $share = $totalAmount / count($usersCollection);
+
                 $balances[$userId] += $share;
             }
         }
@@ -43,3 +41,6 @@ class CalculatorService
         return $balances;
     }
 }
+
+
+

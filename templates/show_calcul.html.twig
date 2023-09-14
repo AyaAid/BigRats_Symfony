@@ -1,3 +1,3 @@
 {% for userId, userWithBalance in usersWithBalances %}
-    {{ user.firstname }}: {{ userWithBalance.netAmount|number_format(2) }}<br>
+    {{ userWithBalance['firstname'] ?? 'Nom inconnu' }}: {{ userWithBalance.netAmount|number_format(2) }}<br>
 {% endfor %}
