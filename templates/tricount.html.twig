@@ -27,14 +27,12 @@
 
     <div class="my-button">
         <a class="btn" id="btn2-create" href="/tricount/{{ tricountArray.id }}/new-expenses">Créer une dépense</a>
-        <a class="btn" id="btn2" href="{{ path('app_edit_tricount', {'tricountId': tricountArray.id}) }}">Éditer le Tricount</a>
-        <a class="btn" id="btn2-quit" type="submit">Quitter le Tricount</a>
         <a class="btn" id="btn2" href="{{ path('app_edit_tricount', {'tricountId': tricountArray.id}) }}">Éditer le
             Tricount</a>
         <form method="POST" action="{{ path('app_quit_tricount', {'tricountId': tricountArray.id}) }}">
             <button class="btn" id="btn2-quit" type="submit">Quitter le Tricount</button>
         </form>
-                <a class="btn" id="btn2-export" href="{{ path('app_pdf_tricount', {'tricountId': tricountArray.id}) }}">Éditer le Tricount</a>
+        <a class="btn" id="btn2-export" href="{{ path('app_pdf_tricount', {'tricountId': tricountArray.id}) }}">Télécharger le PDF</a>
     </div>
 
     <div>
