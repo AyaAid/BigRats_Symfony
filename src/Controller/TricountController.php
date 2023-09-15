@@ -8,11 +8,13 @@ use App\Service\EditTricountService;
 use App\Service\GetTableByIdService;
 use App\Service\LeaveTricountsService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 class TricountController extends AbstractController
 {
@@ -21,12 +23,13 @@ class TricountController extends AbstractController
     private $leaveTricountsService;
     private $entityManager;
 
-    public function __construct(GetTableByIdService $GetTableByIdService, LeaveTricountsService $leaveTricountsService, EditTricountService $editTricountService, EntityManagerInterface $entityManager)
+    public function __construct(GetTableByIdService $GetTableByIdService, LeaveTricountsService $leaveTricountsService, EditTricountService $editTricountService, EntityManagerInterface $entityManager, Pdf $pdf)
     {
         $this->GetTableByIdService = $GetTableByIdService;
         $this->leaveTricountsService = $leaveTricountsService;
         $this->editTricountService = $editTricountService;
         $this->entityManager = $entityManager;
+        $this->pdf = $pdf;
     }
 
     #[Route(path: '/tricount/{tricountId}', name: 'app_tricount')]
@@ -97,5 +100,38 @@ class TricountController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    #[Route(path: '/tricount/{tricountId}/pdf', name: 'app_pdf_tricount')]
+    public function pdfTricount(string $tricountId, Pdf $pdf) {
+        $tricount = $this->GetTableByIdService->getTable(Tricounts::class, $tricountId);
+
+        if (empty($tricount)) {
+            throw $this->createNotFoundException('Le tricount n\'existe pas');
+        }
+
+        $tricountArray = reset($tricount);
+
+        $expenses = $this->entityManager->createQuery('SELECT e FROM App\Entity\Expenses e WHERE e.tricount = :tricount')
+            ->setParameter('tricount', $tricountArray)
+            ->getResult();
+
+        $html = $this->renderView('pdf.html.twig', [
+            'tricountArray' => $tricountArray,
+            'user_expenses' => $expenses,
+        ]);
+
+        $filename = sprintf('tricount-%s.pdf', date('Y-m-d'));
+
+        return new Response(
+            $this->pdf->getOutputFromHtml($html),
+            200,
+            [
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            ]
+        );
+    }
+
+
+
 
 }

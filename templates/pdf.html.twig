@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tricount PDF</title>
+</head>
+<body>
+<h1>Tricount : {{ tricountArray.name }}</h1>
+
+<h2>Informations sur les dépenses :</h2>
+<ul>
+    {% for expense in user_expenses %}
+        <h4>{{expense.title }}</h4>
+    Créé par {{ expense.User.firstname }}  <br/>
+        montant : {{expense.value }} €    <br/>
+         le : {{ expense.CreatedAt.format('Y/m/d') }}
+    {% endfor %}
+</ul>
+</body>
+</html>
