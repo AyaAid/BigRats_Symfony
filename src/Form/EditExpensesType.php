@@ -28,10 +28,12 @@ class EditExpensesType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre',
+                'attr' => ['class' => 'title-expense'],
             ])
             ->add('value', MoneyType::class, [
                 'label' => 'Valeur',
                 'currency' => 'EUR',
+                'attr' => ['class' => 'price-expense']
             ])
             ->add('concerned_users', EntityType::class, [
                 'class' => Users::class,
@@ -39,10 +41,12 @@ class EditExpensesType extends AbstractType
                 'multiple' => true, // Allow multiple selection
                 'expanded' => true, // If you want checkboxes instead of a select box
                 'by_reference' => false,
+                'attr' => ['class' => 'users-expense']
 
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Enregistrer',
+                'attr' => ['class' => 'save-expense']
             ]);
     }
 

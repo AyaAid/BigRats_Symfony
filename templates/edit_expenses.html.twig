@@ -1,22 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/utils/header.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/expenses_edit.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/expenses.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
+
 {% endblock %}
 
 {% block title %}Edit{% endblock %}
 
 {% block body %}
-    {% include 'utils/header.html.twig' %}
-    <main class="main">
-        {{ form_start(form) }}
 
-        {{ form_row(form.title) }}
-        {{ form_row(form.value) }}
-        {{ form_row(form.concerned_users) }}
+    <div class="expenses">
+        <main class="main">
+            {{ form_start(form) }}
 
-        {{ form_end(form) }}
-    </main>
+           <p class="text-name">changer le nom</p> {{ form_widget(form.title) }}
+           <p class="text-price">changer le prix</p> {{ form_widget(form.value) }}
+
+            <p class="text-user">pour qui</p>
+            <div class="users-expense-list">
+
+                {{ form_widget(form.concerned_users) }}
+
+            </div>
+
+
+            {{ form_end(form) }}
+        </main>
+         <button class="delete-expense" href="{{ path('app_expenses_delete', {'expensesId': expensesId}) }}">Supprimer la dépense</button>
+    </div>
+
 {% endblock %}
 
