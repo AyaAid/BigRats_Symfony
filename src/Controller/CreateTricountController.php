@@ -32,7 +32,7 @@ class CreateTricountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $this->createTricountService->createTricount($data, $request);
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('home_page');
         }
 
         $content = $this->render('create_tricount_modal.html.twig', [

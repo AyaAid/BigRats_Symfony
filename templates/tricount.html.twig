@@ -9,7 +9,8 @@
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200&display=swap"
+              rel="stylesheet">
 
     {% endblock %}
 </head>
@@ -26,15 +27,15 @@
 
     <div class="my-button">
         <a class="btn" id="btn2-create" href="/tricount/{{ tricountArray.id }}/new-expenses">Créer une dépense</a>
-        <a class="btn" id="btn2" href="{{ path('app_edit_tricount', {'tricountId': tricountArray.id}) }}">Éditer le Tricount</a>
-        <a class="btn" id="btn2-quit" type="submit">Quitter le Tricount</a>
+        <a class="btn" id="btn2" href="{{ path('app_edit_tricount', {'tricountId': tricountArray.id}) }}">Éditer le
+            Tricount</a>
+        <form method="POST" action="{{ path('app_quit_tricount', {'tricountId': tricountArray.id}) }}">
+            <button class="btn" id="btn2-quit" type="submit">Quitter le Tricount</button>
+        </form>
     </div>
 
 </div>
 
 
-<form method="POST" action="{{ path('app_quit_tricount', {'tricountId': tricountArray.id}) }}">
-
-</form>
 </body>
 </html>

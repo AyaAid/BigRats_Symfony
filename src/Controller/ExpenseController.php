@@ -50,7 +50,7 @@ class ExpenseController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $this->createExpenseService->createExpense($data, $tricountId);
-            return $this->redirectToRoute('home_page');
+            return $this->redirectToRoute('app_tricount', ['tricountId' => $tricountId]);
         }
 
         return $this->render('expenses.html.twig', [
@@ -72,6 +72,9 @@ class ExpenseController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager, int $expensesId) {
         $expense = $entityManager->getRepository(Expenses::class)->find($expensesId);
 
+        $expense = $this->GetTableByIdService->getTable(Expenses::class, $expensesId)[0];
+        $tricountId = $expense->getTricount()->getId();
+
         if (!$expense) {
             throw $this->createNotFoundException('La dépense n\'existe pas');
         }
@@ -82,7 +85,7 @@ class ExpenseController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('home_page');
+            return $this->redirectToRoute('app_tricount', ['tricountId' => $tricountId]);
         }
 
         return $this->render('expenses_info.html.twig', [
