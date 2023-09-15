@@ -10,10 +10,17 @@
 
 {% block body %}
     {% include 'utils/header.html.twig' %}
+
     <main class="main">
-        <div class="tricounts_list_container">
-            {% include 'utils/tricounts_list.html.twig' with {'tricountArray': user_tricounts } %}
-        </div>
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+            <div class="tricounts_list_container">
+                {% include 'utils/tricounts_list.html.twig' with {'tricountArray': user_tricounts } %}
+            </div>
+        {% endif %}
+
     </main>
 {% endblock %}
 
