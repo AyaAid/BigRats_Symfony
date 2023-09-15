@@ -1,5 +1,8 @@
-{% for userWithBalance in usersWithBalances %}
-    {{ userWithBalance.user.firstname }}: {{ userWithBalance.netAmount }}<br>
 
-{% endfor %}
-Total :  {{ totalExpenses }}<br>
+
+    {% for userWithBalance in usersWithBalances %}
+    <div class="calcul">
+        {{ userWithBalance.user.firstname }}: {{ userWithBalance.netAmount }}<br>
+    </div>
+    {% endfor %}
+
