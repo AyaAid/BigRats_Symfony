@@ -64,12 +64,14 @@ class TricountController extends AbstractController
         foreach ($usersWithBalances as &$userWithBalance) {
             $userBalance = $userWithBalance['balance'];
             $userWithBalance['netAmount'] = $userBalance - $averageExpense;
+
         }
 
         return $this->render('tricount.html.twig', ['tricountArray' => $tricount,
             'user_expenses' => $expenses,
             'usersWithBalances' => $usersWithBalances,
-            'tricount_user' => $userOfTricount]);
+            'tricount_user' => $userOfTricount,
+            'totalExpenses' => $totalExpenses]);
     }
 
     #[Route(path: '/tricount/{tricountId}/quit', name: 'app_quit_tricount', methods: ['POST'])]
