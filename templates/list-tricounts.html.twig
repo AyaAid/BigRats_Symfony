@@ -10,7 +10,8 @@
         <li>
             <a href="/tricount/{{ tricount.id }}">{{ tricount.name }} {% if tricount.description != null %}->  {{ tricount.description }} {% endif %}
                 : {{ tricount.category }} -> {{ tricount.devise }}
-            </a></li>
+            </a>
+        </li>
     {% endfor %}
 </ul>
 </body>
