@@ -20,19 +20,7 @@ class CalculatorController extends AbstractController
     #[Route('/calculator/{tricount}', name: 'calculator')]
     public function showCalcul(Tricounts $tricount): Response
     {
-        $usersWithBalances = $tricount->getUsersWithBalances();
 
-        $totalExpenses = 0;
-        foreach ($tricount->getExpenses() as $expense) {
-            $totalExpenses += $expense->getValue();
-        }
-
-        $averageExpense = $totalExpenses / count($usersWithBalances);
-
-        foreach ($usersWithBalances as &$userWithBalance) {
-            $userBalance = $userWithBalance['balance'];
-            $userWithBalance['netAmount'] = $userBalance - $averageExpense;
-        }
 
         return $this->render('show_calcul.html.twig', [
             'tricount' => $tricount,
