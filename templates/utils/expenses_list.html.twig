@@ -1,18 +1,24 @@
+
+
 <ul class="expense_list">
     {% for expense in expenseArray %}
 
         <div class="depense">
-            <a href="/expenses/{{ expense.id }}">
+            <a href="/expenses/{{expense.id}}">
                 <li>
 
                     <div class="left-depense">
-                        <h4>{{ expense.title }}</h4>
-                        <p class="name-depense">Créé par {{ expense.User.firstname }}</p>
+                        <h4>{{expense.title }}</h4>
+                        <p class="name-depense">Payé par {{ expense.User.firstname }}</p>
                     </div>
                     <div class="right-depense">
-                        <p class="price-depense">{{ expense.value }} €</p>
+                        <p class="price-depense">{{expense.value }} €</p>
                         <p class="date-depense">{{ expense.CreatedAt.format('Y/m/d') }}</p>
                     </div>
+
+
+
+
                 </li>
             </a>
         </div>
