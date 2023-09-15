@@ -38,7 +38,7 @@ class TestController extends AbstractController
     #[Route("/error_404", name:"error_404")]
     public function error(): Response
     {
-        return $this->render('/static/error_404.html.twig', ['name' => 'test']);
+        return $this->render('/static/error404.html.twig', ['name' => 'test']);
     }
 
     #[Route("/login_static", name:"login_static")]
