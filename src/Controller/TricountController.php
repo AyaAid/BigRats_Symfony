@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Tricounts;
 use App\Form\TricountEditType;
+use App\Service\CalculatorService;
 use App\Service\EditTricountService;
 use App\Service\GetTableByIdService;
 use App\Service\LeaveTricountsService;
@@ -22,20 +23,22 @@ class TricountController extends AbstractController
     private $GetTableByIdService;
     private $leaveTricountsService;
     private $entityManager;
+    private $calculator;
 
-    public function __construct(GetTableByIdService $GetTableByIdService, LeaveTricountsService $leaveTricountsService, EditTricountService $editTricountService, EntityManagerInterface $entityManager, Pdf $pdf)
+    public function __construct(GetTableByIdService $GetTableByIdService, LeaveTricountsService $leaveTricountsService, EditTricountService $editTricountService, EntityManagerInterface $entityManager, CalculatorService $calculator, Pdf $pdf)
     {
         $this->GetTableByIdService = $GetTableByIdService;
         $this->leaveTricountsService = $leaveTricountsService;
         $this->editTricountService = $editTricountService;
         $this->entityManager = $entityManager;
         $this->pdf = $pdf;
+        $this->calculator = $calculator;
     }
 
     #[Route(path: '/tricount/{tricountId}', name: 'app_tricount')]
     public function index(string $tricountId)
     {
-        $tricount = $this->GetTableByIdService->getTable(Tricounts::class, $tricountId);
+        $tricount = $this->GetTableByIdService->getTable(Tricounts::class, $tricountId)[0];
 
         $expenses = $this->entityManager->createQuery('SELECT e FROM App\Entity\Expenses e WHERE e.tricount = :tricount')
             ->setParameter('tricount', $tricount)
@@ -49,8 +52,23 @@ class TricountController extends AbstractController
             return $this->render('page_not_found.twig', ['message' => 'Le tricount n\'existe pas']);
         }
 
-        return $this->render('tricount.html.twig', ['tricountArray' => $tricount[0],
+        $usersWithBalances = $tricount->getUsersWithBalances();
+
+        $totalExpenses = 0;
+        foreach ($tricount->getExpenses() as $expense) {
+            $totalExpenses += $expense->getValue();
+        }
+
+        $averageExpense = $totalExpenses / count($usersWithBalances);
+
+        foreach ($usersWithBalances as &$userWithBalance) {
+            $userBalance = $userWithBalance['balance'];
+            $userWithBalance['netAmount'] = $userBalance - $averageExpense;
+        }
+
+        return $this->render('tricount.html.twig', ['tricountArray' => $tricount,
             'user_expenses' => $expenses,
+            'usersWithBalances' => $usersWithBalances,
             'tricount_user' => $userOfTricount]);
     }
 
@@ -76,7 +94,7 @@ class TricountController extends AbstractController
     }
 
     #[Route(path: '/tricount/{tricountId}/edit', name: 'app_edit_tricount')]
-    public function editTricount(Request $request, string $tricountId): Response
+    public function editTricount(Request $request, Tricounts $tricountId): Response
     {
         $tricount = $this->GetTableByIdService->getTable(Tricounts::class, $tricountId);
 
