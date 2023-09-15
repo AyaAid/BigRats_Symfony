@@ -69,16 +69,8 @@ class ExpenseController extends AbstractController
     }
 
     #[Route(path: '/expenses/{expensesId}', name: 'app_expenses_show')]
-    public function index($expensesId) {
-        return $this->render('expenses_info.html.twig', [
-            'expensesId' => $expensesId,
-        ]);
-    }
-
-    #[Route(path: '/expenses/{id}/edit', name: 'app_expenses_edit')]
-    public function editExpense(Request $request, EntityManagerInterface $entityManager, int $id): Response
-    {
-        $expense = $entityManager->getRepository(Expenses::class)->find($id);
+    public function index(Request $request, EntityManagerInterface $entityManager, int $expensesId) {
+        $expense = $entityManager->getRepository(Expenses::class)->find($expensesId);
 
         if (!$expense) {
             throw $this->createNotFoundException('La dépense n\'existe pas');
@@ -93,7 +85,8 @@ class ExpenseController extends AbstractController
             return $this->redirectToRoute('home_page');
         }
 
-        return $this->render('edit_expenses.html.twig', [
+        return $this->render('expenses_info.html.twig', [
+            'expensesId' => $expensesId,
             'form' => $form->createView(),
         ]);
     }
