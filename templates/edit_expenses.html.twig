@@ -28,7 +28,7 @@
 
             {{ form_end(form) }}
         </main>
-         <button class="delete-expense" href="{{ path('app_expenses_delete', {'expensesId': expensesId}) }}">Supprimer la dépense</button>
+         <a class="delete-expense" href="{{ path('app_expenses_delete', {'expensesId': expensesId}) }}">Supprimer la dépense</a>
     </div>
 
 {% endblock %}

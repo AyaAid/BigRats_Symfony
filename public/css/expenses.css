@@ -88,4 +88,8 @@
     position: absolute;
     bottom: 0px;
     background-color: #af5454;
+    height: 18px;
+    width: 86.5%;
+    display: flex;
+    justify-content: center;
 }
